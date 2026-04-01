@@ -75,6 +75,12 @@ async function resolveLatestUrl({ request, env, username, type }) {
 }
 
 async function fetchLatestCommitUrl({ env, username }) {
+  const searchCommitUrl = await fetchLatestCommitFromSearch({ env, username });
+
+  if (searchCommitUrl) {
+    return searchCommitUrl;
+  }
+
   const events = await githubRequest(env, `/users/${username}/events/public?per_page=100`);
   const pushEvent = events.find((event) => event.type === 'PushEvent' && Array.isArray(event.payload?.commits) && event.payload.commits.length > 0);
 
@@ -84,6 +90,38 @@ async function fetchLatestCommitUrl({ env, username }) {
 
   const latestCommit = pushEvent.payload.commits[pushEvent.payload.commits.length - 1];
   return `https://github.com/${pushEvent.repo.name}/commit/${latestCommit.sha}`;
+}
+
+async function fetchLatestCommitFromSearch({ env, username }) {
+  let data;
+
+  try {
+    data = await githubRequest(
+      env,
+      `/search/commits?q=${encodeURIComponent(`author:${username}`)}&sort=author-date&order=desc&per_page=1`,
+      {
+        Accept: 'application/vnd.github.cloak-preview+json',
+      }
+    );
+  } catch {
+    return null;
+  }
+
+  const item = data.items?.[0];
+
+  if (!item) {
+    return null;
+  }
+
+  if (item.html_url) {
+    return item.html_url;
+  }
+
+  if (item.repository?.html_url && item.sha) {
+    return `${item.repository.html_url}/commit/${item.sha}`;
+  }
+
+  return null;
 }
 
 async function fetchLatestIssueUrl({ env, username }) {
@@ -104,12 +142,13 @@ async function fetchLatestPrUrl({ env, username }) {
   return data.items?.[0]?.html_url ?? null;
 }
 
-async function githubRequest(env, path) {
+async function githubRequest(env, path, extraHeaders = {}) {
   const response = await fetch(`https://api.github.com${path}`, {
     headers: {
       Accept: 'application/vnd.github+json',
       'User-Agent': 'github-latest-links',
       ...(env.GITHUB_TOKEN ? { Authorization: `Bearer ${env.GITHUB_TOKEN}` } : {}),
+      ...extraHeaders,
     },
   });
 
