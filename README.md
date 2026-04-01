@@ -27,7 +27,7 @@ If you want to know what I am working on, this is my [latest commit](https://you
 
 - `latest PR`: GitHub Search API, most recently updated public PR by author
 - `latest issue`: GitHub Search API, most recently updated public issue by author
-- `latest commit`: the newest commit found in the user's recent public `PushEvent`s
+- `latest commit`: first tries GitHub commit search sorted by author date, then falls back to recent public `PushEvent`s
 - If nothing is found, the Worker renders a small no-result page with a `Go back` button
 
 ## Project Structure
@@ -85,5 +85,5 @@ Static page:
 ## Notes
 
 - The Worker uses `workers.dev` by default.
-- `latest commit` is based on recent public activity, which is the most practical public signal for "what I'm working on now".
+- `latest commit` first uses commit search. If GitHub does not return a match, the Worker falls back to recent public push activity.
 - The `back` query parameter is optional. If present, it powers the no-result page button.

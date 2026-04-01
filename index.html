@@ -90,6 +90,25 @@
           <textarea id="snippet" readonly spellcheck="false"></textarea>
         </div>
       </section>
+
+      <section class="panel panel-guide" aria-labelledby="deploy-title">
+        <div class="panel-head">
+          <h2 id="deploy-title">Deploy The Worker</h2>
+          <p>Free setup, simple steps.</p>
+        </div>
+
+        <ol class="guide-list">
+          <li>Install Node.js and create a Cloudflare account.</li>
+          <li>Open the <code>worker/</code> folder in this project.</li>
+          <li>Run <code>npm install</code>.</li>
+          <li>Run <code>npx wrangler login</code>.</li>
+          <li>Change the Worker name in <code>worker/wrangler.toml</code>.</li>
+          <li>Create a GitHub fine-grained personal access token for public API reads.</li>
+          <li>Run <code>npx wrangler secret put GITHUB_TOKEN</code> and paste the token.</li>
+          <li>Run <code>npx wrangler deploy</code>.</li>
+          <li>Paste the resulting <code>https://your-worker.workers.dev</code> URL into the generator above.</li>
+        </ol>
+      </section>
     </main>
 
     <script src="script.js"></script>
