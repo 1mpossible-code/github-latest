@@ -1,0 +1,6 @@
+name = "github-latest-links"
+main = "src/index.js"
+compatibility_date = "2026-04-01"
+
+[observability]
+enabled = true

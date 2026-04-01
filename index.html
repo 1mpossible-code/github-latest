@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GitHub Latest Links</title>
+    <meta
+      name="description"
+      content="Generate dynamic latest commit, issue, and PR links for a GitHub profile README."
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">GitHub Profile README Utility</p>
+        <h1>Always-current links for what you are working on.</h1>
+        <p class="lede">
+          Paste a GitHub username and your Cloudflare Worker URL. The generator returns
+          stable links for the latest public commit, issue, and PR, plus a README snippet.
+        </p>
+      </section>
+
+      <section class="panel panel-form" aria-labelledby="generator-title">
+        <div class="panel-head">
+          <h2 id="generator-title">Generate Links</h2>
+          <p>Designed for GitHub profile READMEs.</p>
+        </div>
+
+        <form id="generator-form" class="generator-form" novalidate>
+          <label class="field">
+            <span>GitHub username</span>
+            <input id="username" name="username" type="text" placeholder="octocat" autocomplete="off" required>
+          </label>
+
+          <label class="field">
+            <span>Worker base URL</span>
+            <input
+              id="worker-url"
+              name="worker-url"
+              type="url"
+              placeholder="https://your-worker.workers.dev"
+              autocomplete="off"
+              required
+            >
+          </label>
+
+          <button class="button button-primary" type="submit">Generate</button>
+          <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section id="results" class="panel panel-results is-hidden" aria-labelledby="results-title">
+        <div class="panel-head">
+          <h2 id="results-title">Output</h2>
+          <p>Copy the links individually or use the full README block.</p>
+        </div>
+
+        <div class="link-grid">
+          <article class="result-card">
+            <h3>Latest commit</h3>
+            <a id="commit-link" href="#" target="_blank" rel="noreferrer"></a>
+            <button class="button button-secondary" data-copy-target="commit-link" type="button">Copy link</button>
+          </article>
+
+          <article class="result-card">
+            <h3>Latest issue</h3>
+            <a id="issue-link" href="#" target="_blank" rel="noreferrer"></a>
+            <button class="button button-secondary" data-copy-target="issue-link" type="button">Copy link</button>
+          </article>
+
+          <article class="result-card">
+            <h3>Latest PR</h3>
+            <a id="pr-link" href="#" target="_blank" rel="noreferrer"></a>
+            <button class="button button-secondary" data-copy-target="pr-link" type="button">Copy link</button>
+          </article>
+        </div>
+
+        <div class="snippet-wrap">
+          <div class="snippet-head">
+            <h3>README snippet</h3>
+            <button id="copy-snippet" class="button button-secondary" type="button">Copy markdown</button>
+          </div>
+          <textarea id="snippet" readonly spellcheck="false"></textarea>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
